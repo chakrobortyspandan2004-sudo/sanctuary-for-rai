@@ -6,893 +6,7 @@
   <title>A Quiet Place For You</title>
   <style>
     * {
-      margin: 0;
-      padding: 0;
       box-sizing: border-box;
-    }
-
-    body {
-      min-height: 100vh;
-      overflow-x: hidden;
-      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
-      color: #fff8f3;
-      background: radial-gradient(circle at top, #282449 0%, #16142b 55%, #0c0b1a 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 72px 20px 48px;
-      position: relative;
-      transition: background 0.8s ease;
-    }
-
-    #fireflies {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    .firefly {
-      position: absolute;
-      border-radius: 50%;
-      background: #ffe5b4;
-      box-shadow: 0 0 12px rgba(255, 229, 180, 0.9);
-      opacity: 0;
-      animation: drift var(--duration, 9s) ease-in-out infinite;
-      animation-delay: var(--delay, 0s);
-    }
-
-    @keyframes drift {
-      0% {
-        transform: translate(0, 0) scale(0.7);
-        opacity: 0;
-      }
-      25% {
-        opacity: 0.85;
-      }
-      75% {
-        opacity: 0.7;
-      }
-      100% {
-        transform: translate(var(--dx, 30px), var(--dy, -70px)) scale(1.1);
-        opacity: 0;
-      }
-    }
-
-    .starfall-toggle,
-    .sound-toggle {
-      position: fixed;
-      top: 16px;
-      z-index: 30;
-      padding: 8px 14px;
-      border-radius: 999px;
-      border: 1px solid rgba(255, 224, 194, 0.28);
-      background: rgba(22, 20, 43, 0.78);
-      backdrop-filter: blur(10px);
-      color: #fff6ee;
-      font-size: 0.8rem;
-      cursor: pointer;
-      transition: transform 0.25s ease, background 0.3s ease;
-    }
-
-    .starfall-toggle {
-      left: 16px;
-    }
-
-    .sound-toggle {
-      right: 16px;
-    }
-
-    .starfall-toggle:hover,
-    .sound-toggle:hover {
-      transform: translateY(-1px);
-      background: rgba(255, 214, 182, 0.18);
-    }
-
-    #starfallLayer {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      overflow: hidden;
-      z-index: 2;
-    }
-
-    .falling-item {
-      position: absolute;
-      top: -24px;
-      font-size: var(--size, 1rem);
-      opacity: 0;
-      animation: gentleFall var(--fall-duration, 7s) linear forwards;
-    }
-
-    @keyframes gentleFall {
-      0% {
-        opacity: 0;
-        transform: translate(0, -10px) rotate(0deg);
-      }
-      15% {
-        opacity: 0.85;
-      }
-      85% {
-        opacity: 0.75;
-      }
-      100% {
-        opacity: 0;
-        transform: translate(var(--sway, 45px), 105vh) rotate(220deg);
-      }
-    }
-
-    .sanctuary-card {
-      position: relative;
-      z-index: 1;
-      max-width: 500px;
-      width: 100%;
-      padding: 34px 24px;
-      border-radius: 28px;
-      background: rgba(255, 244, 236, 0.08);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 224, 194, 0.25);
-      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45), inset 0 0 24px rgba(255, 224, 194, 0.06);
-      text-align: center;
-      animation: gentleAppear 1.1s ease-out forwards;
-    }
-
-    @keyframes gentleAppear {
-      from {
-        opacity: 0;
-        transform: translateY(18px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .tag {
-      display: inline-block;
-      font-size: 0.78rem;
-      letter-spacing: 1.4px;
-      text-transform: uppercase;
-      color: #ffd8b8;
-      background: rgba(255, 216, 184, 0.12);
-      padding: 6px 14px;
-      border-radius: 999px;
-      margin-bottom: 16px;
-    }
-
-    h1 {
-      font-size: 1.65rem;
-      font-weight: 600;
-      line-height: 1.35;
-      color: #fffaf5;
-      margin-bottom: 12px;
-    }
-
-    p.opening-note {
-      font-size: 0.98rem;
-      line-height: 1.7;
-      color: #f3e4dc;
-    }
-
-    .section-box {
-      margin-top: 26px;
-      padding-top: 22px;
-      border-top: 1px solid rgba(255, 224, 194, 0.16);
-    }
-
-    .section-title {
-      font-size: 0.92rem;
-      color: #ffd8b8;
-      margin-bottom: 12px;
-      letter-spacing: 0.4px;
-    }
-
-    .lantern-area {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .lantern-btn {
-      width: 74px;
-      height: 74px;
-      border-radius: 50%;
-      border: 1px solid rgba(255, 226, 178, 0.55);
-      background: radial-gradient(circle at 35% 30%, #fff3d1 0%, #ffc878 48%, #e08446 100%);
-      box-shadow: 0 0 28px rgba(255, 196, 118, 0.55);
-      cursor: pointer;
-      transition: transform 0.35s ease, opacity 0.5s ease, box-shadow 0.35s ease;
-    }
-
-    .lantern-btn:hover {
-      transform: scale(1.06);
-      box-shadow: 0 0 36px rgba(255, 206, 132, 0.8);
-    }
-
-    .lantern-btn.released {
-      transform: translateY(-130px) scale(0.75);
-      opacity: 0;
-      pointer-events: none;
-      transition: transform 1.4s ease-in, opacity 1.3s ease-in;
-    }
-
-    .comfort-text {
-      min-height: 44px;
-      font-size: 0.94rem;
-      line-height: 1.55;
-      color: #fff6ee;
-    }
-
-    .mood-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      margin-top: 8px;
-    }
-
-    .mood-btn {
-      padding: 11px 8px;
-      border-radius: 16px;
-      border: 1px solid rgba(255, 224, 194, 0.24);
-      background: rgba(255, 255, 255, 0.06);
-      color: #fff8f3;
-      font-size: 0.82rem;
-      line-height: 1.35;
-      cursor: pointer;
-      transition: transform 0.25s ease, background 0.35s ease, border-color 0.35s ease;
-    }
-
-    .mood-btn:hover {
-      transform: translateY(-2px);
-      background: rgba(255, 216, 184, 0.14);
-    }
-
-    .mood-btn.active {
-      background: rgba(255, 204, 166, 0.24);
-      border-color: #ffd8b8;
-      box-shadow: 0 0 16px rgba(255, 204, 166, 0.25);
-    }
-
-    .mood-message,
-    .wish-note {
-      margin-top: 14px;
-      padding: 14px 16px;
-      border-radius: 18px;
-      background: rgba(12, 11, 26, 0.35);
-      border: 1px solid rgba(255, 224, 194, 0.16);
-      font-size: 0.92rem;
-      line-height: 1.6;
-      color: #ffeede;
-      min-height: 54px;
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .breath-box,
-    .wish-box {
-      margin-top: 28px;
-      padding-top: 22px;
-      border-top: 1px solid rgba(255, 224, 194, 0.16);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .breath-circle {
-      width: 96px;
-      height: 96px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(255, 225, 186, 0.35) 0%, rgba(214, 152, 166, 0.14) 70%, transparent 100%);
-      border: 1px solid rgba(255, 224, 194, 0.45);
-      box-shadow: 0 0 28px rgba(255, 210, 168, 0.25);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.85rem;
-      color: #fff6ee;
-      cursor: pointer;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .breath-circle.breathing {
-      animation: calmBreath 8s ease-in-out infinite;
-    }
-
-    @keyframes calmBreath {
-      0%, 100% {
-        transform: scale(0.88);
-        box-shadow: 0 0 18px rgba(255, 210, 168, 0.2);
-      }
-      50% {
-        transform: scale(1.22);
-        box-shadow: 0 0 38px rgba(255, 220, 182, 0.48);
-      }
-    }
-
-    .hug-btn {
-      padding: 10px 18px;
-      border-radius: 999px;
-      border: 1px solid rgba(255, 224, 194, 0.32);
-      background: rgba(255, 214, 182, 0.12);
-      color: #fff8f3;
-      font-size: 0.86rem;
-      cursor: pointer;
-      transition: transform 0.25s ease, background 0.3s ease;
-    }
-
-    .hug-btn:hover {
-      transform: translateY(-2px);
-      background: rgba(255, 214, 182, 0.22);
-    }
-
-    .hug-note {
-      min-height: 36px;
-      font-size: 0.88rem;
-      line-height: 1.55;
-      color: #ffe8d6;
-    }
-
-    .wish-jar-btn {
-      padding: 11px 20px;
-      border-radius: 999px;
-      border: 1px solid rgba(255, 228, 186, 0.42);
-      background: linear-gradient(135deg, rgba(255, 218, 168, 0.22) 0%, rgba(218, 148, 166, 0.16) 100%);
-      color: #fffaf4;
-      font-size: 0.88rem;
-      cursor: pointer;
-      box-shadow: 0 0 22px rgba(255, 206, 148, 0.2);
-      transition: transform 0.25s ease, box-shadow 0.3s ease, background 0.3s ease;
-    }
-
-    .wish-jar-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 0 30px rgba(255, 214, 162, 0.36);
-      background: linear-gradient(135deg, rgba(255, 218, 168, 0.3) 0%, rgba(218, 148, 166, 0.24) 100%);
-    }
-
-    .envelope-wrapper {
-      margin-top: 28px;
-      padding-top: 22px;
-      border-top: 1px solid rgba(255, 224, 194, 0.16);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .envelope-stage {
-      position: relative;
-      width: 100%;
-      max-width: 340px;
-      height: 210px;
-      margin-top: 95px;
-      perspective: 1000px;
-      cursor: pointer;
-    }
-
-    .envelope-back {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(145deg, #f3dec9 0%, #e4c3a3 100%);
-      border-radius: 16px;
-      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
-      overflow: hidden;
-    }
-
-    .letter-card {
-      position: absolute;
-      left: 14px;
-      right: 14px;
-      bottom: 12px;
-      min-height: 175px;
-      background: #fffaf4;
-      color: #3a261d;
-      border-radius: 12px;
-      padding: 16px 14px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
-      border: 1px solid #efd5bc;
-      transform: translateY(25px);
-      opacity: 0;
-      transition: transform 0.95s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.6s ease;
-      z-index: 2;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      text-align: center;
-    }
-
-    .envelope-stage.open .letter-card {
-      transform: translateY(-56px);
-      opacity: 1;
-      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.35);
-    }
-
-    .letter-card h3 {
-      font-size: 0.98rem;
-      color: #8c4a32;
-      margin-bottom: 6px;
-    }
-
-    .letter-card p {
-      font-size: 0.84rem;
-      line-height: 1.5;
-      color: #4a3329;
-    }
-
-    .read-more-btn {
-      margin-top: 10px;
-      padding: 7px 15px;
-      border-radius: 999px;
-      border: 1px solid rgba(140, 74, 50, 0.35);
-      background: #f5e2cf;
-      color: #6b3421;
-      font-size: 0.8rem;
-      font-weight: 600;
-      cursor: pointer;
-      align-self: center;
-      transition: transform 0.2s ease, background 0.25s ease;
-    }
-
-    .read-more-btn:hover {
-      transform: scale(1.03);
-      background: #ebd0b5;
-    }
-
-    .envelope-front {
-      position: absolute;
-      inset: 0;
-      border-radius: 16px;
-      background: linear-gradient(180deg, rgba(235, 198, 163, 0.25) 0%, #dfb893 65%, #d4a67d 100%);
-      clip-path: polygon(0 38%, 50% 68%, 100% 38%, 100% 100%, 0 100%);
-      z-index: 3;
-      pointer-events: none;
-    }
-
-    .envelope-flap {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 125px;
-      background: linear-gradient(180deg, #edd0b4 0%, #dcb188 100%);
-      clip-path: polygon(0 0, 100% 0, 50% 92%);
-      transform-origin: top center;
-      transition: transform 0.75s ease;
-      z-index: 4;
-      border-top-left-radius: 16px;
-      border-top-right-radius: 16px;
-    }
-
-    .envelope-stage.open .envelope-flap {
-      transform: rotateX(180deg);
-      z-index: 1;
-    }
-
-    .wax-seal {
-      position: absolute;
-      top: 86px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 35% 30%, #d96b6b 0%, #9e2f38 75%, #731d25 100%);
-      border: 2px solid rgba(255, 224, 194, 0.55);
-      box-shadow: 0 6px 18px rgba(158, 47, 56, 0.65);
-      color: #fff4ea;
-      font-size: 1.15rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 5;
-      transition: opacity 0.4s ease, transform 0.4s ease;
-    }
-
-    .envelope-stage.open .wax-seal {
-      opacity: 0;
-      transform: translateX(-50%) scale(0.6);
-      pointer-events: none;
-    }
-
-    .envelope-hint {
-      margin-top: 14px;
-      font-size: 0.84rem;
-      color: #e8cbb6;
-    }
-
-    .footer-actions {
-      margin-top: 26px;
-      padding-top: 18px;
-      border-top: 1px solid rgba(255, 224, 194, 0.14);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .reset-btn {
-      padding: 8px 16px;
-      border-radius: 999px;
-      border: 1px solid rgba(255, 224, 194, 0.24);
-      background: rgba(255, 255, 255, 0.05);
-      color: #f3e4dc;
-      font-size: 0.8rem;
-      cursor: pointer;
-      transition: transform 0.2s ease, background 0.3s ease;
-    }
-
-    .reset-btn:hover {
-      transform: translateY(-1px);
-      background: rgba(255, 214, 182, 0.14);
-    }
-
-    .sanctuary-footer {
-      font-size: 0.78rem;
-      color: #d9bfb0;
-      letter-spacing: 0.4px;
-    }
-
-    .sparkle-burst {
-      position: fixed;
-      pointer-events: none;
-      font-size: 1.1rem;
-      animation: floatUp 1.8s ease-out forwards;
-      z-index: 20;
-    }
-
-    @keyframes floatUp {
-      0% {
-        opacity: 1;
-        transform: translateY(0) scale(0.8);
-      }
-      100% {
-        opacity: 0;
-        transform: translateY(-130px) scale(1.25);
-      }
-    }
-
-    .letter-modal-backdrop {
-      position: fixed;
-      inset: 0;
-      background: rgba(8, 7, 18, 0.78);
-      backdrop-filter: blur(8px);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      z-index: 50;
-    }
-
-    .letter-modal-backdrop.show {
-      display: flex;
-    }
-
-    .letter-modal {
-      max-width: 480px;
-      width: 100%;
-      background: #fffaf4;
-      color: #3a261d;
-      border-radius: 22px;
-      padding: 28px 24px;
-      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
-      border: 1px solid #ecd0b4;
-      text-align: left;
-      animation: gentleAppear 0.35s ease-out;
-    }
-
-    .letter-modal h2 {
-      font-size: 1.25rem;
-      color: #8c4a32;
-      margin-bottom: 12px;
-    }
-
-    .letter-modal p {
-      font-size: 0.95rem;
-      line-height: 1.75;
-      color: #463026;
-      margin-bottom: 12px;
-    }
-
-    .close-modal-btn {
-      margin-top: 8px;
-      padding: 9px 18px;
-      border-radius: 999px;
-      border: none;
-      background: #8c4a32;
-      color: #fffaf5;
-      font-size: 0.85rem;
-      cursor: pointer;
-    }
-
-    @media (max-width: 440px) {
-      .mood-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-    .moon-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 0.78rem;
-      color: #ffe6c7;
-      margin-bottom: 10px;
-      opacity: 0.9;
-    }
-
-    .for-rai-note {
-      margin-top: 8px;
-      font-size: 0.86rem;
-      color: #ffd9ba;
-      font-style: italic;
-    }
-    .sanctuary-card::before {
-      content: "";
-      position: absolute;
-      inset: -18px;
-      border-radius: 36px;
-      background: radial-gradient(circle at 50% 20%, rgba(255, 214, 170, 0.14), transparent 70%);
-      z-index: -1;
-      pointer-events: none;
-      animation: softAura 6s ease-in-out infinite;
-    }
-
-    @keyframes softAura {
-      0%, 100% {
-        opacity: 0.55;
-        transform: scale(0.98);
-      }
-      50% {
-        opacity: 1;
-        transform: scale(1.02);
-      }
-    }
-
-    .tap-bloom {
-      position: fixed;
-      width: 14px;
-      height: 14px;
-      border-radius: 50%;
-      pointer-events: none;
-      background: radial-gradient(circle, rgba(255, 240, 210, 0.95) 0%, rgba(255, 198, 146, 0.35) 55%, transparent 100%);
-      transform: translate(-50%, -50%) scale(0.4);
-      animation: bloomFade 1.2s ease-out forwards;
-      z-index: 15;
-    }
-
-    @keyframes bloomFade {
-      0% {
-        opacity: 0.95;
-        transform: translate(-50%, -50%) scale(0.4);
-      }
-      100% {
-        opacity: 0;
-        transform: translate(-50%, -50%) scale(4.2);
-      }
-    } 
-    .entrance-gate {
-      position: fixed;
-      inset: 0;
-      z-index: 40;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
-      background: radial-gradient(circle at top, #282449 0%, #16142b 58%, #0c0b1a 100%);
-      transition: opacity 0.85s ease, visibility 0.85s ease;
-    }
-
-    .entrance-gate.hidden {
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
-    }
-
-    .gate-card {
-      max-width: 420px;
-      width: 100%;
-      padding: 36px 24px;
-      border-radius: 28px;
-      background: rgba(255, 244, 236, 0.08);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 224, 194, 0.25);
-      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
-      text-align: center;
-      animation: gentleAppear 1s ease-out forwards;
-    }
-
-    .gate-sub {
-      font-size: 0.8rem;
-      letter-spacing: 1.3px;
-      text-transform: uppercase;
-      color: #ffd8b8;
-      margin-bottom: 12px;
-    }
-
-    .gate-title {
-      font-size: 1.5rem;
-      font-weight: 600;
-      line-height: 1.35;
-      color: #fffaf5;
-      margin-bottom: 12px;
-    }
-
-    .gate-text {
-      font-size: 0.94rem;
-      line-height: 1.65;
-      color: #f3e4dc;
-      margin-bottom: 24px;
-    }
-
-    .enter-btn {
-      padding: 12px 24px;
-      border-radius: 999px;
-      border: 1px solid rgba(255, 226, 178, 0.55);
-      background: linear-gradient(135deg, rgba(255, 218, 168, 0.28) 0%, rgba(224, 132, 70, 0.26) 100%);
-      color: #fffaf4;
-      font-size: 0.92rem;
-      font-weight: 500;
-      cursor: pointer;
-      box-shadow: 0 0 26px rgba(255, 204, 142, 0.28);
-      transition: transform 0.25s ease, box-shadow 0.3s ease, background 0.3s ease;
-    }
-
-    .enter-btn:hover {
-      transform: translateY(-2px) scale(1.02);
-      box-shadow: 0 0 34px rgba(255, 212, 158, 0.45);
-      background: linear-gradient(135deg, rgba(255, 218, 168, 0.38) 0%, rgba(224, 132, 70, 0.34) 100%);
-    }
-    .release-box {
-      margin-top: 28px;
-      padding-top: 22px;
-      border-top: 1px solid rgba(255, 224, 194, 0.16);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .worry-input {
-      width: 100%;
-      padding: 12px 16px;
-      border-radius: 16px;
-      border: 1px solid rgba(255, 224, 194, 0.26);
-      background: rgba(12, 11, 26, 0.42);
-      color: #fffaf5;
-      font-size: 0.9rem;
-      outline: none;
-      transition: border-color 0.3s ease, box-shadow 0.3s ease, opacity 0.6s ease, transform 0.6s ease;
-    }
-
-    .worry-input::placeholder {
-      color: rgba(243, 228, 220, 0.55);
-    }
-
-    .worry-input:focus {
-      border-color: #ffd8b8;
-      box-shadow: 0 0 18px rgba(255, 216, 184, 0.2);
-    }
-
-    .worry-input.dissolving {
-      opacity: 0;
-      transform: translateY(-18px) scale(0.96);
-    }
-
-    .release-btn {
-      padding: 10px 20px;
-      border-radius: 999px;
-      border: 1px solid rgba(255, 226, 178, 0.45);
-      background: linear-gradient(135deg, rgba(255, 218, 168, 0.22) 0%, rgba(224, 132, 70, 0.2) 100%);
-      color: #fffaf4;
-      font-size: 0.86rem;
-      cursor: pointer;
-      transition: transform 0.25s ease, background 0.3s ease;
-    }
-
-    .release-btn:hover {
-      transform: translateY(-2px);
-      background: linear-gradient(135deg, rgba(255, 218, 168, 0.32) 0%, rgba(224, 132, 70, 0.28) 100%);
-    }
-    .reminder-box {
-      margin-top: 28px;
-      padding-top: 22px;
-      border-top: 1px solid rgba(255, 224, 194, 0.16);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .reminder-card {
-      width: 100%;
-      padding: 14px 16px;
-      border-radius: 18px;
-      background: rgba(12, 11, 26, 0.35);
-      border: 1px solid rgba(255, 224, 194, 0.16);
-      font-size: 0.92rem;
-      line-height: 1.6;
-      color: #ffeede;
-      min-height: 54px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: opacity 0.35s ease;
-    }
-
-    .reminder-btn {
-      padding: 9px 18px;
-      border-radius: 999px;
-      border: 1px solid rgba(255, 224, 194, 0.32);
-      background: rgba(255, 214, 182, 0.12);
-      color: #fff8f3;
-      font-size: 0.85rem;
-      cursor: pointer;
-      transition: transform 0.25s ease, background 0.3s ease;
-    }
-
-    .reminder-btn:hover {
-      transform: translateY(-2px);
-      background: rgba(255, 214, 182, 0.22);
-    }
-.sky-moon {
-      position: fixed;
-      top: 56px;
-      right: 9%;
-      width: 92px;
-      height: 92px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 30% 30%, #fff8e6 0%, #ffe2ad 65%, rgba(255, 206, 142, 0.35) 100%);
-      box-shadow: 0 0 38px rgba(255, 224, 172, 0.32), 0 0 80px rgba(198, 178, 255, 0.14);
-      opacity: 0.78;
-      pointer-events: none;
-      z-index: 0;
-      overflow: hidden;
-      animation: moonFloat 9s ease-in-out infinite;
-    }
-
-    .sky-moon::after {
-      content: "";
-      position: absolute;
-      top: -6px;
-      left: 34px;
-      width: 92px;
-      height: 92px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 40% 35%, #242042 0%, #16142b 68%, #0f0d21 100%);
-      box-shadow: inset 8px 0 14px rgba(12, 11, 26, 0.55);
-    }
-
-    @keyframes moonFloat {
-      0%, 100% {
-        transform: translateY(0px) rotate(-14deg);
-        opacity: 0.74;
-      }
-      50% {
-        transform: translateY(-7px) rotate(-10deg);
-        opacity: 0.88;
-      }
-    }
-
-    @media (max-width: 600px) {
-      .sky-moon {
-        width: 68px;
-        height: 68px;
-        top: 52px;
-        right: 6%;
-      }
-
-      .sky-moon::after {
-        top: -4px;
-        left: 25px;
-        width: 68px;
-        height: 68px;
-      }
-    }
-    * {
       -webkit-tap-highlight-color: transparent;
     }
 
@@ -902,85 +16,800 @@
       -webkit-tap-highlight-color: transparent;
       outline: none;
     }
-    button:active{transform: scale(0.985);
+
+    button:active {
+      transform: scale(0.985);
     }
-    .care-box {
-      margin-top: 28px;
-      padding-top: 22px;
-      border-top: 1px solid rgba(255, 224, 194, 0.16);
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+      color: #f6efe9;
+      background:
+        radial-gradient(circle at 82% 16%, rgba(255, 224, 182, 0.14), transparent 26%),
+        radial-gradient(circle at 20% 20%, rgba(120, 145, 210, 0.16), transparent 40%),
+        linear-gradient(160deg, #0b1021 0%, #141b34 52%, #1d2340 100%);
       display: flex;
-      flex-direction: column;
       align-items: center;
-      gap: 12px;
-    }
-
-    .care-actions {
-      display: flex;
-      flex-wrap: wrap;
       justify-content: center;
-      gap: 10px;
+      padding: 24px 16px;
+      overflow-x: hidden;
+      position: relative;
     }
 
-    .care-btn {
-      padding: 9px 16px;
-      border-radius: 999px;
-      border: 1px solid rgba(255, 224, 194, 0.3);
-      background: rgba(255, 214, 182, 0.1);
-      color: #fff8f3;
-      font-size: 0.84rem;
-      cursor: pointer;
-      transition: transform 0.25s ease, background 0.3s ease, border-color 0.3s ease;
+    /* Soft Opening Entrance Animation */
+    .intro-veil {
+      position: fixed;
+      inset: 0;
+      z-index: 30;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background:
+        radial-gradient(circle at 50% 42%, rgba(247, 217, 168, 0.16), transparent 48%),
+        linear-gradient(160deg, #090d1c 0%, #131a33 55%, #1a213d 100%);
+      opacity: 1;
+      transition: opacity 0.75s ease, visibility 0.75s ease;
     }
 
-    .care-btn:hover {
-      transform: translateY(-2px);
-      background: rgba(255, 214, 182, 0.2);
-      border-color: #ffd8b8;
-    }
-
-    .care-btn.done {
-      background: rgba(255, 218, 168, 0.25);
-      border-color: #ffe2b8;
-    }
-    .promise-note {
-      margin-top: 22px;
-      padding: 14px 18px;
-      border-radius: 18px;
-      background: linear-gradient(135deg, rgba(255, 222, 184, 0.08) 0%, rgba(196, 178, 255, 0.07) 100%);
-      border: 1px solid rgba(255, 224, 194, 0.18);
-      font-size: 0.88rem;
-      line-height: 1.65;
-      color: #ffe8d6;
-      text-align: center;
+    .intro-veil.hide {
       opacity: 0;
-      transform: translateY(10px);
-      transition: opacity 0.6s ease, transform 0.6s ease;
+      visibility: hidden;
       pointer-events: none;
     }
 
-    .promise-note.revealed {
+    .intro-core {
+      text-align: center;
+      animation: introFloat 1.5s ease-out forwards;
+    }
+
+    .intro-moon {
+      font-size: 2.2rem;
+      color: #f7d9a8;
+      text-shadow: 0 0 24px rgba(247, 217, 168, 0.55);
+      margin-bottom: 10px;
+      animation: moonPulse 2s ease-in-out infinite;
+    }
+
+    .intro-title {
+      font-size: 1.48rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: #fff6ed;
+      margin-bottom: 6px;
+    }
+
+    .intro-sub {
+      font-size: 0.88rem;
+      color: rgba(246, 239, 233, 0.75);
+    }
+
+    @keyframes introFloat {
+      0% {
+        opacity: 0;
+        transform: translateY(14px) scale(0.96);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    @keyframes moonPulse {
+      0%, 100% {
+        transform: scale(1);
+        opacity: 0.88;
+      }
+      50% {
+        transform: scale(1.12);
+        opacity: 1;
+      }
+    }
+
+    /* Ambient Sky Moon */
+    .sky-moon {
+      position: fixed;
+      top: 42px;
+      right: 8%;
+      width: 84px;
+      height: 84px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #fff7e8, #f7d9a8 65%, #e6bc7c 100%);
+      box-shadow: 0 0 36px rgba(255, 226, 176, 0.35), 0 0 80px rgba(255, 226, 176, 0.14);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .sky-moon::after {
+      content: "";
+      position: absolute;
+      top: -6px;
+      left: 28px;
+      width: 82px;
+      height: 82px;
+      border-radius: 50%;
+      background: #10162b;
+    }
+
+    /* Fireflies, Starfall & Falling Symbols */
+    #fireflies,
+    #starfallLayer {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .firefly {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: #ffe5b4;
+      box-shadow: 0 0 10px #ffd28a, 0 0 18px rgba(255, 210, 138, 0.7);
+      opacity: 0;
+      animation: floatFly var(--dur, 9s) ease-in-out infinite;
+      animation-delay: var(--delay, 0s);
+    }
+
+    @keyframes floatFly {
+      0%, 100% {
+        transform: translate(0, 0) scale(0.8);
+        opacity: 0;
+      }
+      25% {
+        opacity: 0.85;
+      }
+      50% {
+        transform: translate(var(--dx, 24px), var(--dy, -36px)) scale(1.15);
+        opacity: 0.45;
+      }
+      75% {
+        opacity: 0.9;
+      }
+    }
+
+    .shooting-star {
+      position: absolute;
+      width: 115px;
+      height: 2px;
+      background: linear-gradient(90deg, rgba(255, 244, 224, 0.95), transparent);
+      border-radius: 999px;
+      transform: rotate(-28deg);
+      animation: shoot 1.35s ease-out forwards;
+    }
+
+    @keyframes shoot {
+      0% {
+        opacity: 0;
+        transform: translate(0, 0) rotate(-28deg);
+      }
+      15% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+        transform: translate(-350px, 195px) rotate(-28deg);
+      }
+    }
+
+    .falling-emoji {
+      position: fixed;
+      top: -28px;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0;
+      animation: gentleEmojiFall var(--fall-dur, 9s) linear forwards;
+    }
+
+    @keyframes gentleEmojiFall {
+      0% {
+        opacity: 0;
+        transform: translateY(-16px) rotate(0deg) scale(0.85);
+      }
+      15% {
+        opacity: 0.72;
+      }
+      85% {
+        opacity: 0.6;
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(105vh) rotate(22deg) scale(1);
+      }
+    }
+
+    /* Top Controls */
+    .top-controls {
+      position: fixed;
+      top: 14px;
+      left: 14px;
+      display: flex;
+      gap: 8px;
+      z-index: 5;
+      flex-wrap: wrap;
+    }
+
+    .pill-toggle {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 224, 194, 0.22);
+      color: #f6efe9;
+      padding: 7px 13px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      backdrop-filter: blur(8px);
+      transition: background 0.25s ease, border-color 0.25s ease;
+    }
+
+    .pill-toggle:hover {
+      background: rgba(255, 224, 194, 0.16);
+      border-color: rgba(255, 224, 194, 0.36);
+    }
+
+/* =====================================================
+       CARD-LESS FLOATING SHEET (NO TOP BORDER, BOTTOM GLOW)
+       ===================================================== */
+    .sanctuary-card {
+      max-width: 500px;
+      width: 100%;
+      background: transparent !important;
+      border: none !important;
+      box-shadow: none !important;
+      backdrop-filter: none !important;
+      padding: 18px 14px 24px !important;
+      perspective: none !important;
+      overflow: visible !important;
+    }
+
+    .sanctuary-card::before,
+    .sanctuary-card::after {
+      display: none !important;
+    }
+
+    /* প্রতিটি ধাপ কোনো বদ্ধ কার্ড নয়—খোলা ভাসমান শিট, শুধু নিচে নরম আলো */
+    .step-section,
+    .step-section.section-box {
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 224, 194, 0.015)) !important;
+      border: none !important;
+      border-bottom: 1.5px solid rgba(255, 224, 194, 0.34) !important;
+      border-radius: 18px 18px 26px 26px !important;
+      padding: 20px 16px 22px !important;
+      box-shadow: 0 18px 34px -18px rgba(247, 217, 168, 0.22) !important;
+      transform-origin: center center !important;
+      transform: translateX(28px) !important;
+      opacity: 0;
+      backface-visibility: visible !important;
+      transition: transform 0.52s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.42s ease !important;
+    }
+
+    .step-section.is-active,
+    .step-section.section-box.is-active {
       opacity: 1;
-      transform: translateY(0);
-      pointer-events: auto;
+      transform: translateX(0) !important;
+    }
+
+    .footer-actions {
+      border-top: none !important;
+      margin-top: 22px;
+    }
+
+    .moon-badge {
+      display: inline-block;
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #f7d9a8;
+      background: rgba(247, 217, 168, 0.11);
+      border: 1px solid rgba(247, 217, 168, 0.25);
+      padding: 6px 14px;
+      border-radius: 999px;
+      margin-bottom: 10px;
+    }
+
+    .tag {
+      display: block;
+      font-size: 0.75rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(246, 239, 233, 0.62);
+      margin-bottom: 6px;
+    }
+
+    h1 {
+      margin: 4px 0 10px;
+      font-size: 1.65rem;
+      font-weight: 600;
+      color: #fff6ed;
+    }
+
+    .opening-note {
+      margin: 0 auto 10px;
+      font-size: 0.94rem;
+      line-height: 1.6;
+      color: rgba(246, 239, 233, 0.85);
+      max-width: 440px;
+    }
+
+    .for-rai-note {
+      margin: 0 auto 18px;
+      font-size: 0.86rem;
+      font-style: italic;
+      color: #f7d9a8;
+    }
+
+    /* Step Progress Indicator */
+    .step-indicator {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 16px;
+    }
+
+    .step-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: rgba(255, 224, 194, 0.22);
+      transition: all 0.35s ease;
+    }
+
+    .step-dot.active {
+      width: 24px;
+      background: #f7d9a8;
+    }
+
+    /* Step-by-Step Book Page / Card Sections */
+    .section-box {
+      background: rgba(255, 255, 255, 0.045);
+      border: 1px solid rgba(255, 224, 194, 0.16);
+      border-radius: 22px;
+      padding: 22px 18px;
+      margin-top: 8px;
+    }
+
+    .step-section {
+      display: none;
+      opacity: 0;
+      transform-origin: left center;
+      transform: rotateY(-14deg) translateX(-8px);
+      backface-visibility: hidden;
+      transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.45s ease;
+    }
+
+    .step-section.is-visible {
+      display: block;
+    }
+
+    .step-section.is-active {
+      opacity: 1;
+      transform: rotateY(0deg) translateX(0);
+    }
+
+    .section-title {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: #ffe4c2;
+      margin-bottom: 12px;
+    }
+
+    .comfort-text {
+      font-size: 0.92rem;
+      line-height: 1.6;
+      color: rgba(246, 239, 233, 0.88);
+      margin: 10px 0 0;
+    }
+
+    /* Lantern */
+    .lantern-area {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 8px 0;
+    }
+
+    .lantern-btn {
+      width: 78px;
+      height: 92px;
+      border-radius: 40px 40px 26px 26px;
+      border: 1px solid rgba(255, 220, 165, 0.5);
+      background: radial-gradient(circle at 50% 45%, #fff3d1, #f7b863 65%, #c97a2b 100%);
+      box-shadow: 0 0 28px rgba(247, 184, 99, 0.55);
+      cursor: pointer;
+      transition: transform 1.4s ease, opacity 1.4s ease, box-shadow 0.3s ease;
+    }
+
+    .lantern-btn.released {
+      transform: translateY(-90px) scale(0.72);
+      opacity: 0.18;
+    }
+
+    /* Action Buttons */
+    .btn-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .soft-btn {
+      width: 100%;
+      padding: 11px 16px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 224, 194, 0.22);
+      background: rgba(255, 224, 194, 0.08);
+      color: #fff6ed;
+      font-size: 0.92rem;
+      cursor: pointer;
+      transition: background 0.25s ease, border-color 0.25s ease;
+    }
+
+    .soft-btn:hover {
+      background: rgba(255, 224, 194, 0.16);
+      border-color: rgba(255, 224, 194, 0.4);
+    }
+
+    /* Breathing Circle */
+    .breath-circle {
+      width: 116px;
+      height: 116px;
+      margin: 12px auto;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 224, 194, 0.35);
+      background: radial-gradient(circle, rgba(255, 224, 194, 0.22), rgba(255, 224, 194, 0.05));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff6ed;
+      font-size: 0.92rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: transform 4s ease-in-out, box-shadow 4s ease-in-out;
+    }
+
+    .breath-circle.inhale {
+      transform: scale(1.22);
+      box-shadow: 0 0 32px rgba(255, 224, 194, 0.32);
+    }
+
+    /* Sky Release Input */
+    .sky-input {
+      width: 100%;
+      padding: 11px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 224, 194, 0.24);
+      background: rgba(11, 16, 33, 0.55);
+      color: #fff6ed;
+      font-size: 0.92rem;
+      outline: none;
+      margin-bottom: 10px;
+    }
+
+    .sky-input::placeholder {
+      color: rgba(246, 239, 233, 0.45);
+    }
+
+    /* Envelope & Wax Seal (Prothom-er Moto Simple & Clean) */
+    .envelope-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 10px 0 4px;
+    }
+
+    .wax-seal {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 224, 194, 0.4);
+      background: radial-gradient(circle at 35% 35%, #d65a5a, #9e2f2f 70%, #751e1e 100%);
+      color: #ffe9d6;
+      font-size: 1.35rem;
+      cursor: pointer;
+      box-shadow: 0 10px 24px rgba(158, 47, 47, 0.45);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .wax-seal:hover {
+      transform: scale(1.05);
+    }
+
+    .envelope-hint {
+      margin: 12px 0 0;
+      font-size: 0.88rem;
+      color: rgba(246, 239, 233, 0.8);
+    }
+
+    /* Navigation Buttons inside Steps */
+    .step-nav-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-top: 18px;
+      padding-top: 14px;
+      border-top: 1px solid rgba(255, 224, 194, 0.12);
+    }
+
+    .step-nav-btn {
+      padding: 9px 18px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 224, 194, 0.28);
+      background: rgba(255, 224, 194, 0.11);
+      color: #fff6ed;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: background 0.25s ease;
+    }
+
+    .step-nav-btn:hover {
+      background: rgba(255, 224, 194, 0.2);
+    }
+
+    .step-nav-btn.secondary {
+      background: transparent;
+      color: rgba(246, 239, 233, 0.72);
+    }
+
+    /* Promise Note */
+    .promise-note {
+      display: none;
+      margin-top: 16px;
+      padding: 16px;
+      border-radius: 18px;
+      background: rgba(247, 217, 168, 0.1);
+      border: 1px solid rgba(247, 217, 168, 0.28);
+      text-align: center;
+    }
+
+    .promise-note.show {
+      display: block;
+      animation: fadePromise 0.5s ease;
+    }
+
+    @keyframes fadePromise {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .promise-label {
+      font-size: 0.76rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #f7d9a8;
+      margin-bottom: 6px;
+    }
+
+    .promise-note p {
+      margin: 0;
+      font-size: 0.9rem;
+      line-height: 1.55;
+      color: #fff6ed;
+    }
+
+    /* Footer */
+    .footer-actions {
+      margin-top: 20px;
+      padding-top: 14px;
+      border-top: 1px solid rgba(255, 224, 194, 0.12);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .reset-btn {
+      background: transparent;
+      border: 1px solid rgba(255, 224, 194, 0.22);
+      color: rgba(246, 239, 233, 0.78);
+      padding: 7px 14px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      cursor: pointer;
+    }
+
+    .sanctuary-footer {
+      margin: 0;
+      font-size: 0.76rem;
+      color: rgba(246, 239, 233, 0.52);
+    }
+
+    /* Letter Modal */
+    .letter-modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(6, 9, 20, 0.78);
+      backdrop-filter: blur(8px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      z-index: 20;
+    }
+
+    .letter-modal-backdrop.open {
+      display: flex;
+    }
+
+    .letter-modal {
+      width: 100%;
+      max-width: 460px;
+      background: #18203c;
+      border: 1px solid rgba(255, 224, 194, 0.26);
+      border-radius: 24px;
+      padding: 26px 22px;
+      color: #fff6ed;
+      text-align: left;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.65);
+    }
+
+    .letter-modal h2 {
+      margin: 0 0 14px;
+      font-size: 1.22rem;
+      color: #f7d9a8;
+      text-align: center;
+    }
+
+    .letter-modal p {
+      font-size: 0.94rem;
+      line-height: 1.65;
+      color: rgba(246, 239, 233, 0.92);
+      margin: 0 0 12px;
+    }
+
+    .close-modal-btn {
+      width: 100%;
+      margin-top: 8px;
+      padding: 11px 16px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 224, 194, 0.3);
+      background: rgba(255, 224, 194, 0.14);
+      color: #fff6ed;
+      font-size: 0.92rem;
+      cursor: pointer;
+    }
+
+    @media (max-width: 600px) {
+      .sky-moon {
+        width: 64px;
+        height: 64px;
+        top: 54px;
+        right: 6%;
+      }
+      .sky-moon::after {
+        top: -4px;
+        left: 22px;
+        width: 64px;
+        height: 64px;
+      }
+      .sanctuary-card {
+        padding: 24px 18px 20px;
+      }
+      h1 {
+        font-size: 1.42rem;
+      }
+    }
+    /* Touch / Tap Ripple Glow */
+    .touch-ripple {
+      position: fixed;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 25;
+      border: 1.5px solid rgba(255, 226, 190, 0.75);
+      background: radial-gradient(circle, rgba(255, 226, 190, 0.28), transparent 70%);
+      transform: translate(-50%, -50%) scale(0.3);
+      opacity: 0.9;
+      animation: rippleOut 0.65s ease-out forwards;
+    }
+
+    @keyframes rippleOut {
+      0% {
+        transform: translate(-50%, -50%) scale(0.3);
+        opacity: 0.9;
+      }
+      100% {
+        transform: translate(-50%, -50%) scale(3.4);
+        opacity: 0;
+      }
+    }
+
+    /* Lantern-er Soft Idle Float & Glow */
+    .lantern-btn:not(.released) {
+      animation: lanternIdle 3.2s ease-in-out infinite;
+    }
+
+    @keyframes lanternIdle {
+      0%, 100% {
+        transform: translateY(0);
+        box-shadow: 0 0 26px rgba(247, 184, 99, 0.5);
+      }
+      50% {
+        transform: translateY(-6px);
+        box-shadow: 0 0 38px rgba(255, 214, 145, 0.78);
+      }
+    }
+
+    /* Wish & Reminder Text Soft Appear */
+    .soft-text-pop {
+      animation: softTextFade 0.4s ease;
+    }
+
+    @keyframes softTextFade {
+      from {
+        opacity: 0.25;
+        transform: translateY(5px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    /* Sudhu Plain Lekha Sojasoji Upore Uthe Miliye Jabe */
+    .sky-upward-word {
+      position: fixed;
+      left: 50%;
+      z-index: 22;
+      max-width: 86vw;
+      color: #fff6ed;
+      font-size: 0.96rem;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      text-align: center;
+      pointer-events: none;
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+      filter: blur(0px);
+      animation: straightUpDissolve 2.1s ease-out forwards;
+    }
+
+    @keyframes straightUpDissolve {
+      0% {
+        opacity: 0.95;
+        transform: translateX(-50%) translateY(0);
+        filter: blur(0px);
+      }
+      55% {
+        opacity: 0.45;
+        transform: translateX(-50%) translateY(-105px);
+        filter: blur(2px);
+      }
+      100% {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-210px);
+        filter: blur(7px);
+      }
     }
   </style>
 </head>
 <body>
-  <div class="entrance-gate" id="entranceGate">
-    <div class="gate-card">
-      <div class="gate-sub">For Kotha • A Quiet Moment</div>
-      <h2 class="gate-title">Ekta choto shantir dorja opekkha korche</h2>
-      <p class="gate-text">
-        Mon kharap kichu ektu vlo korte, nijer moton kore ekta shanto jaygay dhukte chaile niche tap koro.
-      </p>
-      <button type="button" class="enter-btn" id="enterSanctuaryBtn">✦ Dorja Kholo</button>
+  <!-- Soft Opening Entrance Animation -->
+  <div class="intro-veil" id="introVeil" aria-hidden="true">
+    <div class="intro-core">
+      <div class="intro-moon">☾</div>
+      <div class="intro-title">For Kotha🤍</div>
+      <div class="intro-sub">Opening a quiet corner of peace...</div>
     </div>
   </div>
-  <button type="button" class="starfall-toggle" id="starfallToggle">✦ Starfall: Off</button>
-  <button type="button" class="sound-toggle" id="soundToggle">♪ Soft Chime: Off</button>
-  <div id="starfallLayer"></div>
-  <div id="fireflies"></div>
-  <div class="sky-moon" atia-hidden="true"></div>
+
+  <div class="top-controls">
+    <button type="button" class="pill-toggle" id="starfallToggle">✨ Starfall</button>
+    <button type="button" class="pill-toggle" id="soundToggle">🎵 Soft Chime: Off</button>
+  </div>
+
+  <div id="starfallLayer" aria-hidden="true"></div>
+  <div id="fireflies" aria-hidden="true"></div>
+  <div class="sky-moon" aria-hidden="true"></div>
 
   <main class="sanctuary-card">
     <div class="moon-badge">☾ Midnight Sanctuary • For Rai</div>
@@ -989,100 +818,131 @@
     <p class="opening-note">
       Ei choto jaiga-ta sudhu tomar jonno. Ekhane kono tara nei, kono chap nei—sudhu ektu shanti ar valobasa.
     </p>
-    <p class="for-rai-note">“Kono din mon kharap thakle ekhane eshe ektu shwash nio...”</p>
+    <p class="for-rai-note">
+      "Kono din mon kharap thakle ekhane eshe ektu shwash nio..."
     </p>
 
-    <section class="section-box">
-      <div class="section-title">Worry-Release Lantern</div>
+    <!-- Step Progress Dots -->
+    <div class="step-indicator" aria-label="Step progress">
+      <span class="step-dot active" data-dot="1"></span>
+      <span class="step-dot" data-dot="2"></span>
+      <span class="step-dot" data-dot="3"></span>
+      <span class="step-dot" data-dot="4"></span>
+      <span class="step-dot" data-dot="5"></span>
+      <span class="step-dot" data-dot="6"></span>
+      <span class="step-dot" data-dot="7"></span>
+    </div>
+
+    <!-- STEP 1: Worry-Release Lantern -->
+    <section class="section-box step-section" data-step="1">
+      <div class="section-title">1. Worry-Release Lantern</div>
       <div class="lantern-area">
-        <button type="button" class="lantern-btn" id="lanternBtn" aria-label="Release lantern"></button>
+        <button type="button" class="lantern-btn" id="lanternBtn" aria-label="Release Lantern"></button>
         <p class="comfort-text" id="lanternNote">
           Moner bhar-ta ektu halka korbe? Glowing lantern-ta tap kore akashe chere dao.
         </p>
       </div>
+      <div class="step-nav-row" style="justify-content: flex-end;">
+        <button type="button" class="step-nav-btn" onclick="showStep(2)">Porer Dhap →</button>
+      </div>
     </section>
 
-    <section class="section-box">
-      <div class="section-title">Aj kemon lagche?</div>
-      <div class="mood-grid">
-        <button type="button" class="mood-btn" data-mood="sad">Mon kharap lagche</button>
-        <button type="button" class="mood-btn" data-mood="tired">Aj khub tired</button>
-        <button type="button" class="mood-btn" data-mood="smile">Sudhu ekta smile chai</button>
+    <!-- STEP 2: Aj kemon lagche? -->
+    <section class="section-box step-section" data-step="2">
+      <div class="section-title">2. Aj kemon lagche?</div>
+      <div class="btn-group">
+        <button type="button" class="soft-btn mood-btn" data-msg="Mon kharap thakle kichu lukiye rekho na—ami sob somoy tomar kotha shunte achi.">Mon kharap lagche</button>
+        <button type="button" class="soft-btn mood-btn" data-msg="Aj onek kichu samlecho. Ekhon kichu na bhebe sudhu ektu rest nao.">Aj khub tired</button>
+        <button type="button" class="soft-btn mood-btn" data-msg="Tumi ektu haslei puro din-ta sundor hoye jay. Tomar jonno ekta choto smile.">Sudhu ekta smile chai</button>
       </div>
-      <div class="mood-message" id="moodMessage">
+      <p class="comfort-text" id="moodNote">
         Je kono ekta button-e tap koro—tomar jonno choto ekta shantir kotha opekkha korche.
+      </p>
+      <div class="step-nav-row">
+        <button type="button" class="step-nav-btn secondary" onclick="showStep(1)">← Agerta</button>
+        <button type="button" class="step-nav-btn" onclick="showStep(3)">Porer Dhap →</button>
       </div>
     </section>
 
-    <section class="breath-box">
-      <div class="section-title">Calm Breath & Warm Hug</div>
+    <!-- STEP 3: Calm Breath & Warm Hug -->
+    <section class="section-box step-section" data-step="3">
+      <div class="section-title">3. Calm Breath & Warm Hug</div>
       <div class="breath-circle" id="breathCircle" role="button" tabindex="0">Tap Breath</div>
-      <p class="hug-note" id="breathStatus">Circle-ta tap kore 4 second shwash nao, 4 second chere dao.</p>
-      <button type="button" class="hug-btn" id="hugBtn">🤍 Send a Warm Hug</button>
-      <p class="hug-note" id="hugNote">Ektu kache ashar moto warm hug pete button-e tap koro.</p>
+      <p class="comfort-text" id="breathNote">
+        Circle-ta tap kore 4 second shwash nao, 4 second chere dao.
+      </p>
+      <div class="btn-group" style="margin-top: 14px;">
+        <button type="button" class="soft-btn" id="warmHugBtn">🤍 Send a Warm Hug</button>
+      </div>
+      <p class="comfort-text" id="hugNote">
+        Ektu kache ashar moto warm hug pete button-e tap koro.
+      </p>
+      <div class="step-nav-row">
+        <button type="button" class="step-nav-btn secondary" onclick="showStep(2)">← Agerta</button>
+        <button type="button" class="step-nav-btn" onclick="showStep(4)">Porer Dhap →</button>
+      </div>
     </section>
 
-    <section class="wish-box">
-      <div class="section-title">Midnight Wish Jar</div>
-      <button type="button" class="wish-jar-btn" id="wishJarBtn">✦ Ekta Shantir Kotha Kholo</button>
-      <div class="wish-note" id="wishNote">
+    <!-- STEP 4: Midnight Wish Jar -->
+    <section class="section-box step-section" data-step="4">
+      <div class="section-title">4. Midnight Wish Jar</div>
+      <button type="button" class="soft-btn" id="wishBtn">✦ Ekta Shantir Kotha Kholo</button>
+      <p class="comfort-text" id="wishNote">
         Button-e tap kore dekho—tomar jonno choto ekta shantir asha lukiye ache.
-      </div>
-    </section>
-    <section class="reminder-box">
-      <div class="section-title">Ekhonkar Jonno Choto Reminder</div>
-      <div class="reminder-card" id="reminderCard">
-        Ekhon kono boro kichu bhabar dorkar nei—ektu bosho, shwash nao, nijer jotno nao.
-      </div>
-      <button type="button" class="reminder-btn" id="reminderBtn">☁ Notun Reminder Dekho</button>
-    </section>
-    <section class="release-box">
-      <div class="section-title">Moner Kotha Akashe Chere Dao</div>
-      <input
-        type="text"
-        class="worry-input"
-        id="worryInput"
-        placeholder="Ja kichu mon kharap korche, ekhane likhe chere dao..."
-        maxlength="120"
-      />
-      <button type="button" class="release-btn" id="releaseWorryBtn">✨ Akashe Chere Dao</button>
-      <p class="hug-note" id="releaseStatus">
-        Kono kotha bhetore jome thakle ekhane likhe chere dao—kothao save hobe na, sudhu miliye jabe.
       </p>
-    </section>
-    <section class="care-box">
-      <div class="section-title">Nijer Jonno Choto Care</div>
-      <div class="care-actions">
-        <button type="button" class="care-btn" id="waterBtn">💧 Ektu Jol Kheyecho?</button>
-        <button type="button" class="care-btn" id="restBtn">🛋️ Ektu Boshecho?</button>
+      <div class="step-nav-row">
+        <button type="button" class="step-nav-btn secondary" onclick="showStep(3)">← Agerta</button>
+        <button type="button" class="step-nav-btn" onclick="showStep(5)">Porer Dhap →</button>
       </div>
-      <p class="hug-note" id="careNote">
-        Mon bhari thakle choto choto jinish-gulo-i ektu shanti dey.
-      </p>
     </section>
 
-    <section class="envelope-wrapper">
-      <div class="section-title">Secret Envelope For Rai</div>
-      <div class="envelope-stage" id="secretEnvelope" role="button" tabindex="0" aria-label="Open secret envelope">
-        <div class="envelope-back"></div>
-        <div class="letter-card">
-          <h3>Sudhu Tomar Jonno, Rai </h3>
-          <p>
-            Jodi kokhono mon-ta khub bhari lage ba sab kichu ektu elomelo lage, mone rekho tumi amar kache sobcheye special.
-            Tumi ektu haslei amar puro prithibi-ta aro sundor hoye jay, Ami sob somoy tomar pashe achi.
-          </p>
-          <button type="button" class="read-more-btn" id="openModalBtn">Boro Kore Poro</button>
-        </div>
-        <div class="envelope-front"></div>
-        <div class="envelope-flap"></div>
-        <div class="wax-seal">♥</div>
+    <!-- STEP 5: Ekhanakar Jonno Choto Reminder -->
+    <section class="section-box step-section" data-step="5">
+      <div class="section-title">5. Ekhanakar Jonno Choto Reminder</div>
+      <p class="comfort-text" id="reminderNote" style="margin-bottom: 12px;">
+        Ekhon kono boro kichu bhabar dorkar nei—ektu bosho, shwash nao, nijer jotno nao.
+      </p>
+      <button type="button" class="soft-btn" id="reminderBtn">☁ Notun Reminder Dekho</button>
+      <div class="step-nav-row">
+        <button type="button" class="step-nav-btn secondary" onclick="showStep(4)">← Agerta</button>
+        <button type="button" class="step-nav-btn" onclick="showStep(6)">Porer Dhap →</button>
       </div>
-      <p class="envelope-hint" id="envelopeHint">Wax seal-e tap kore chithi-ta khulo</p>
     </section>
-<div class="promise-note" id="promiseNote">
-      <div class="promise-label">-Amar Promise tor kache-</div>
+
+    <!-- STEP 6: Moner Kotha Akashe Chere Dao -->
+    <section class="section-box step-section" data-step="6">
+      <div class="section-title">6. Moner Kotha Akashe Chere Dao</div>
+      <input type="text" class="sky-input" id="skyInput" placeholder="Ja mon bhari korche ekhane likho..." />
+      <button type="button" class="soft-btn" id="releaseSkyBtn">✦ Akashe Chere Dao</button>
+      <p class="comfort-text" id="skyNote">
+        Kono kotha bhetore jome thakle choto kore likhe chere dao—kothao save hobe na, sudhu miliye jabe.
+      </p>
+      <div class="step-nav-row">
+        <button type="button" class="step-nav-btn secondary" onclick="showStep(5)">← Agerta</button>
+        <button type="button" class="step-nav-btn" onclick="showStep(7)">Shes Dhap (Chithi) →</button>
+      </div>
+    </section>
+
+    <!-- STEP 7: Secret Envelope -->
+    <section class="section-box step-section" data-step="7">
+      <div class="section-title">7. Secret Envelope • For Rai</div>
+      <div class="envelope-box">
+        <button type="button" class="wax-seal" id="openLetterBtn" aria-label="Open Letter">✉</button>
+        <p class="envelope-hint" id="envelopeHint">
+          Wax seal-e tap kore chithi-ta khulo
+        </p>
+      </div>
+      <div class="step-nav-row" style="justify-content: flex-start;">
+        <button type="button" class="step-nav-btn secondary" onclick="showStep(6)">← Agerta</button>
+      </div>
+    </section>
+
+    <!-- Promise Note (Chithi bondho korle dekhabe) -->
+    <div class="promise-note" id="promiseNote">
+      <div class="promise-label">Amar Promise Tomar Kache</div>
       <p id="promiseText">
-      “Jee din-ta upset lagbe ba kothao shanti khujbe, ei choto jayga-ta khule nis—amr kache tui koto ta special bujha jabi.”
+        "Jee din-ta upset lagbe ba kothao shanti khujbe, ei choto jaiga-ta khule nio—ami sob somoy tomar pashe achi."
+      </p>
     </div>
 
     <div class="footer-actions">
@@ -1091,400 +951,329 @@
     </div>
   </main>
 
+  <!-- Letter Modal -->
   <div class="letter-modal-backdrop" id="letterModalBackdrop">
     <div class="letter-modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-      <h2 id="modalTitle">Sudhu Tomar Jonno — Ekta Shantir Chithi</h2>
-<p>
-        Jodi kokhono mon-ta khub bhari lage, matha jure jay ba kichu bhalo na lage—tumi nijer bhetore
-        chup kore sob chepe rekho na. Ekhane ektu bosho, shwash nao, kono tara nei.
+      <h2 id="modalTitle">Sudhu Tomar Jonno – Ekta Shantir Chithi</h2>
+      <p>
+        Jodi kokhono mon-ta khub bhari lage, matha jure jay ba kichu bhalo na lage—tumi nijer bhetore chup kore sob chepe rekho na. Ekhane ektu bosho, shwash nao, kono tara nei.
       </p>
       <p>
-        Tumi je bhabe nijer moner bhar samle niye cholo, seta sotti khub sundor. Sob kichu ekshathe
-        thik kore felar kono chap nio na—dhire dhire sob thik hoye jabe.
+        Tumi je bhabe nijer moner bhar samle niye cholo, seta sotti khub sundor. Sob kichu ekshathe thik kore felar kono chap nio na—dhire dhire sob thik hoye jabe.
       </p>
       <p>
-        Jokhon-i ektu shanti, ekta warm hug ba ekta choto smile dorkar hobe, mone rekho ami sob somoy
-        tomar pashe achi. Tumi ektu haslei amar puro din-ta onno rokom bhalo hoye jay.
+        Jokhon-i ektu shanti, ekta warm hug ba ekta choto smile dorkar hobe, mone rekho ami sob somoy tomar pashe achi. Tumi ektu haslei amar puro din-ta onno rokom bhalo hoye jay.
       </p>
-      <button type="button" class="close-modal-btn" id="closeModalBtn">Chithi Bondho Koro</button>
+      <button type="button" class="close-modal-btn" id="closeModalBtn">Chithi Bondho Kori</button>
     </div>
   </div>
 
   <script>
-    const container = document.getElementById("fireflies");
-    const count = 26;
-
-    for (let i = 0; i < count; i++) {
-      const dot = document.createElement("span");
-      dot.className = "firefly";
-
-      const size = Math.random() * 4 + 3;
-      dot.style.width = `${size}px`;
-      dot.style.height = `${size}px`;
-      dot.style.left = `${Math.random() * 100}%`;
-      dot.style.top = `${Math.random() * 100}%`;
-      dot.style.setProperty("--dx", `${(Math.random() - 0.5) * 90}px`);
-      dot.style.setProperty("--dy", `${-40 - Math.random() * 90}px`);
-      dot.style.setProperty("--duration", `${7 + Math.random() * 6}s`);
-      dot.style.setProperty("--delay", `${Math.random() * 5}s`);
-
-      container.appendChild(dot);
-    }
-
-    const lanternBtn = document.getElementById("lanternBtn");
-    const lanternNote = document.getElementById("lanternNote");
-
-    const lanternLines = [
-      "Sob bhar-ta ektu halka hoye jak... tumi eka noo, ami achi.",
-      "Ja kichu chap niye boshe acho, ajker moton ektu chere dao.",
-      "Dhire dhire sob thik hoye jabe—tumi khub strong."
-    ];
-    let lanternIndex = 0;
-
-    lanternBtn.addEventListener("click", () => {
-      lanternBtn.classList.add("released");
-      lanternNote.textContent = lanternLines[lanternIndex % lanternLines.length];
-      lanternIndex++;
-
+    // Soft Opening Intro Dismissal
+    window.addEventListener("load", () => {
+      const introVeil = document.getElementById("introVeil");
+      if (!introVeil) return;
       setTimeout(() => {
-        lanternBtn.classList.remove("released");
-      }, 1700);
+        introVeil.classList.add("hide");
+      }, 1500);
     });
 
-    const moodButtons = document.querySelectorAll(".mood-btn");
-    const moodMessage = document.getElementById("moodMessage");
+    // 1. Step-by-Step Transition Logic
+    function showStep(stepNumber) {
+      const steps = document.querySelectorAll(".step-section");
+      const dots = document.querySelectorAll(".step-dot");
 
-    const moodData = {
-      sad: {
-        bg: "radial-gradient(circle at top, #38294d 0%, #1d1633 58%, #0e0b1d 100%)",
-        text: "Mon kharap thakleo kono dorkar nei lukiye rakhar. Ektu somoy nao, nijer jotno nao—tomar hasi-ta khub dami."
-      },
-      tired: {
-        bg: "radial-gradient(circle at top, #432c3b 0%, #231729 58%, #100b17 100%)",
-        text: "Ajke ar sob kichu ekshathe samlate hobe na. Ektu bosho, chokh bondho kore ektu rest nao."
-      },
-      smile: {
-        bg: "radial-gradient(circle at top, #47323c 0%, #261a2e 58%, #110c19 100%)",
-        text: "Ei je ekta choto smile—tomar mukhe hasi dekhlei puro din-ta onno rokom bhalo hoye jay."
-      }
-    };
-
-    moodButtons.forEach((btn) => {
-      btn.addEventListener("click", () => {
-        moodButtons.forEach((b) => b.classList.remove("active"));
-        btn.classList.add("active");
-
-        const selected = moodData[btn.dataset.mood];
-        if (selected) {
-          document.body.style.background = selected.bg;
-          moodMessage.textContent = selected.text;
-        }
+      dots.forEach((dot) => {
+        dot.classList.toggle("active", Number(dot.dataset.dot) === stepNumber);
       });
-    });
 
-    const breathCircle = document.getElementById("breathCircle");
-    const breathStatus = document.getElementById("breathStatus");
-    let isBreathing = false;
-    let breathTimer = null;
+      steps.forEach((sec) => {
+        sec.classList.remove("is-active");
+        setTimeout(() => {
+          if (!sec.classList.contains("is-active")) {
+            sec.classList.remove("is-visible");
+          }
+        }, 300);
+      });
 
-    breathCircle.addEventListener("click", () => {
-      isBreathing = !isBreathing;
-      breathCircle.classList.toggle("breathing", isBreathing);
-
-      clearInterval(breathTimer);
-      if (isBreathing) {
-        breathCircle.textContent = "Pause";
-        let inhale = true;
-        breathStatus.textContent = "Aste aste shwash nao... (Inhale gently)";
-        breathTimer = setInterval(() => {
-          inhale = !inhale;
-          breathStatus.textContent = inhale
-            ? "Aste aste shwash nao... (Inhale gently)"
-            : "Aste aste shwash chere dao... (Exhale slowly)";
-        }, 4000);
-      } else {
-        breathCircle.textContent = "Tap Breath";
-        breathStatus.textContent = "Circle-ta tap kore 4 second shwash nao, 4 second chere dao.";
-      }
-    });
-
-    function createSparkles(x, y) {
-      const symbols = ["✨", "💛", "🌸", "✨"];
-      for (let i = 0; i < 14; i++) {
-        const el = document.createElement("span");
-        el.className = "sparkle-burst";
-        el.textContent = symbols[i % symbols.length];
-        el.style.left = `${x + (Math.random() - 0.5) * 180}px`;
-        el.style.top = `${y + (Math.random() - 0.5) * 60}px`;
-        document.body.appendChild(el);
-
-        setTimeout(() => el.remove(), 1800);
+      const target = document.querySelector(`.step-section[data-step="${stepNumber}"]`);
+      if (target) {
+        setTimeout(() => {
+          target.classList.add("is-visible");
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              target.classList.add("is-active");
+            });
+          });
+        }, 200);
       }
     }
 
-    const hugBtn = document.getElementById("hugBtn");
-    const hugNote = document.getElementById("hugNote");
-    const hugLines = [
-      "Ekta gorom, shanto hug pathalam—ekhon ektu aram koro.",
-      "Kono chap nio na, sob kichu ekta somoy halka hoye jay.",
-      "Tumi khub bhalo, ar tomar hasi-ta amader sobcheye priyo."
-    ];
-    let hugIndex = 0;
-
-    hugBtn.addEventListener("click", () => {
-      hugNote.textContent = hugLines[hugIndex % hugLines.length];
-      hugIndex++;
-      const rect = hugBtn.getBoundingClientRect();
-      createSparkles(rect.left + rect.width / 2, rect.top + 10);
-    });
-
-    const wishJarBtn = document.getElementById("wishJarBtn");
-    const wishNote = document.getElementById("wishNote");
-
-    const wishLines = [
-      "Tumi je bhabe nijer moner bhar samle niye cholo, seta sotti khub sundor.",
-      "Ajker din-ta jemon-i hok, ekhon sudhu nijer kotha ektu bhabo.",
-      "Tomar choto choto hasi-gulo amar kache sobcheye boro pawa.",
-      "Kono kichu niye bhoy pao na—dhire dhire sob thik hoye jabe."
-    ];
-    let wishIndex = 0;
-
-    wishJarBtn.addEventListener("click", () => {
-      wishNote.textContent = wishLines[wishIndex % wishLines.length];
-      wishIndex++;
-      const rect = wishJarBtn.getBoundingClientRect();
-      createSparkles(rect.left + rect.width / 2, rect.top + 10);
-    });
-
-    const secretEnvelope = document.getElementById("secretEnvelope");
-    const envelopeHint = document.getElementById("envelopeHint");
-
-    secretEnvelope.addEventListener("click", () => {
-      const isOpening = !secretEnvelope.classList.contains("open");
-      secretEnvelope.classList.toggle("open");
-
-      if (isOpening) {
-        envelopeHint.textContent = "Abar bondho korte chaile envelope-e tap koro";
-        const rect = secretEnvelope.getBoundingClientRect();
-        createSparkles(rect.left + rect.width / 2, rect.top + 80);
-      } else {
-        envelopeHint.textContent = "Wax seal-e tap kore chithi-ta khulo";
+    window.addEventListener("DOMContentLoaded", () => {
+      const firstStep = document.querySelector('.step-section[data-step="1"]');
+      if (firstStep) {
+        firstStep.classList.add("is-visible");
+        requestAnimationFrame(() => {
+          firstStep.classList.add("is-active");
+        });
       }
     });
 
-    const starfallToggle = document.getElementById("starfallToggle");
+    // 2. Fireflies Generator
+    const fireflyContainer = document.getElementById("fireflies");
+    for (let i = 0; i < 22; i++) {
+      const fly = document.createElement("span");
+      fly.className = "firefly";
+      fly.style.left = Math.random() * 100 + "%";
+      fly.style.top = Math.random() * 100 + "%";
+      fly.style.setProperty("--dur", 7 + Math.random() * 7 + "s");
+      fly.style.setProperty("--delay", Math.random() * 6 + "s");
+      fly.style.setProperty("--dx", (Math.random() * 60 - 30) + "px");
+      fly.style.setProperty("--dy", (-20 - Math.random() * 50) + "px");
+      fireflyContainer.appendChild(fly);
+    }
+
+    // 3. Starfall Effect (Beshi Stars)
     const starfallLayer = document.getElementById("starfallLayer");
-    let starfallActive = false;
-    let starfallTimer = null;
-    const fallSymbols = ["✦", "🌸", "✨", "❀"];
-
-    function spawnFallingItem() {
-      if (!starfallActive) return;
-      const item = document.createElement("span");
-      item.className = "falling-item";
-      item.textContent = fallSymbols[Math.floor(Math.random() * fallSymbols.length)];
-      item.style.left = `${Math.random() * 100}%`;
-      item.style.setProperty("--size", `${13 + Math.random() * 8}px`);
-      item.style.setProperty("--sway", `${(Math.random() - 0.5) * 110}px`);
-      item.style.setProperty("--fall-duration", `${6 + Math.random() * 4}s`);
-
-      starfallLayer.appendChild(item);
-      setTimeout(() => item.remove(), 10500);
-    }
-
-    starfallToggle.addEventListener("click", () => {
-      starfallActive = !starfallActive;
-      if (starfallActive) {
-        starfallToggle.textContent = "✦ Starfall: On";
-        for (let i = 0; i < 6; i++) {
-          setTimeout(spawnFallingItem, i * 260);
-        }
-        starfallTimer = setInterval(spawnFallingItem, 650);
-      } else {
-        starfallToggle.textContent = "✦ Starfall: Off";
-        clearInterval(starfallTimer);
+    document.getElementById("starfallToggle").addEventListener("click", () => {
+      for (let i = 0; i < 9; i++) {
+        setTimeout(() => {
+          const star = document.createElement("span");
+          star.className = "shooting-star";
+          star.style.top = 5 + Math.random() * 40 + "%";
+          star.style.left = 55 + Math.random() * 42 + "%";
+          starfallLayer.appendChild(star);
+          setTimeout(() => star.remove(), 1500);
+        }, i * 190);
       }
     });
 
-    const soundToggle = document.getElementById("soundToggle");
-    let audioCtx = null;
-    let chimeInterval = null;
-    let soundOn = false;
+    // 4. Soft Falling Symbols / Emojis
+    const sanctuarySymbols = ["✦", "☾", "🤍", "✨", "☁"];
+    function spawnSanctuarySymbol() {
+      const symbol = document.createElement("span");
+      symbol.className = "falling-emoji";
+      symbol.textContent = sanctuarySymbols[Math.floor(Math.random() * sanctuarySymbols.length)];
+      symbol.style.left = Math.random() * 95 + "%";
+      symbol.style.fontSize = (13 + Math.random() * 8) + "px";
+      symbol.style.setProperty("--fall-dur", (7.5 + Math.random() * 4.5) + "s");
+      document.body.appendChild(symbol);
+      setTimeout(() => symbol.remove(), 12500);
+    }
+    setInterval(spawnSanctuarySymbol, 1900);
 
-    function playSoftNote(freq) {
-      if (!audioCtx) return;
+    // 5. Gentle Web Audio Chime
+    let audioCtx = null;
+    let chimeOn = false;
+    let chimeTimer = null;
+    const soundToggle = document.getElementById("soundToggle");
+
+    function playSoftTone() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      const notes = [261.63, 329.63, 392.0, 493.88];
+      const freq = notes[Math.floor(Math.random() * notes.length)];
       const osc = audioCtx.createOscillator();
       const gain = audioCtx.createGain();
       osc.type = "sine";
-      osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-
-      gain.gain.setValueAtTime(0.0001, audioCtx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.035, audioCtx.currentTime + 0.6);
-      gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 3.2);
-
+      osc.frequency.value = freq;
+      gain.gain.setValueAtTime(0.001, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.035, audioCtx.currentTime + 0.4);
+      gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 2.4);
       osc.connect(gain);
       gain.connect(audioCtx.destination);
       osc.start();
-      osc.stop(audioCtx.currentTime + 3.3);
+      osc.stop(audioCtx.currentTime + 2.5);
     }
 
     soundToggle.addEventListener("click", () => {
-      soundOn = !soundOn;
-      if (soundOn) {
-        if (!audioCtx) {
-          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        }
-        if (audioCtx.state === "suspended") {
-          audioCtx.resume();
-        }
-        soundToggle.textContent = "♪ Soft Chime: On";
-        const notes = [261.63, 329.63, 392.0, 523.25];
-        let idx = 0;
-        playSoftNote(notes[0]);
-        chimeInterval = setInterval(() => {
-          idx = (idx + 1) % notes.length;
-          playSoftNote(notes[idx]);
-        }, 2800);
+      chimeOn = !chimeOn;
+      soundToggle.textContent = chimeOn ? "🎵 Soft Chime: On" : "🎵 Soft Chime: Off";
+      if (chimeOn) {
+        playSoftTone();
+        chimeTimer = setInterval(playSoftTone, 3600);
       } else {
-        soundToggle.textContent = "♪ Soft Chime: Off";
-        clearInterval(chimeInterval);
+        clearInterval(chimeTimer);
       }
     });
 
-    const openModalBtn = document.getElementById("openModalBtn");
-    const closeModalBtn = document.getElementById("closeModalBtn");
-    const letterModalBackdrop = document.getElementById("letterModalBackdrop");
-
-    openModalBtn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      letterModalBackdrop.classList.add("show");
+    // 6. Step 1: Worry-Release Lantern
+    const lanternBtn = document.getElementById("lanternBtn");
+    const lanternNote = document.getElementById("lanternNote");
+    lanternBtn.addEventListener("click", () => {
+      lanternBtn.classList.add("released");
+      lanternNote.textContent = "Tomar moner bhar akashe ure gelo... ebar porer dhape cholo.";
+      setTimeout(() => {
+        showStep(2);
+      }, 2100);
     });
 
-    closeModalBtn.addEventListener("click", () => {
-      letterModalBackdrop.classList.remove("show");
-      promiseNote.classList.add("revealed");
+    // 7. Step 2: Mood Buttons
+    const moodNote = document.getElementById("moodNote");
+    document.querySelectorAll(".mood-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        moodNote.textContent = btn.dataset.msg;
+      });
     });
 
-    letterModalBackdrop.addEventListener("click", (e) => {
-      if (e.target === letterModalBackdrop) {
-        letterModalBackdrop.classList.remove("show");
-        promiseNote.classList.add("revealed");
-      }
-    });
+    // 8. Step 3: Breathing & Warm Hug
+    const breathCircle = document.getElementById("breathCircle");
+    const breathNote = document.getElementById("breathNote");
+    let breathing = false;
 
-    const resetSanctuaryBtn = document.getElementById("resetSanctuaryBtn");
+    breathCircle.addEventListener("click", () => {
+      if (breathing) return;
+      breathing = true;
+      breathCircle.textContent = "Shwash Nao...";
+      breathCircle.classList.add("inhale");
+      breathNote.textContent = "Dhire dhire bhetore shwash nao (4 second)...";
 
-    resetSanctuaryBtn.addEventListener("click",  () => {waterBtn.classList.remove("done");
-      restBtn.classList.remove("done");
-      careNote.textContent = "Mon bhari thakle choto choto jinish-gulo-i ektu shanti dey.";reminderIdx = 1;
-      reminderCard.textContent = realReminders[0];
-      promiseNote.classList.remove("revealed");
-      document.body.style.background =
-        "radial-gradient(circle at top, #282449 0%, #16142b 55%, #0c0b1a 100%)";
+      setTimeout(() => {
+        breathCircle.textContent = "Chere Dao...";
+        breathCircle.classList.remove("inhale");
+        breathNote.textContent = "Ebar dhire dhire shwash chere dao...";
+      }, 4000);
 
-      moodButtons.forEach((b) => b.classList.remove("active"));
-      moodMessage.textContent =
-        "Je kono ekta button-e tap koro—tomar jonno choto ekta shantir kotha opekkha korche.";
-
-      lanternBtn.classList.remove("released");
-      lanternNote.textContent =
-        "Moner bhar-ta ektu halka korbe? Glowing lantern-ta tap kore akashe chere dao.";
-
-      if (isBreathing) {
-        isBreathing = false;
-        clearInterval(breathTimer);
-        breathCircle.classList.remove("breathing");
+      setTimeout(() => {
         breathCircle.textContent = "Tap Breath";
-        breathStatus.textContent =
-          "Circle-ta tap kore 4 second shwash nao, 4 second chere dao.";
-      }
-
-      hugNote.textContent = "Ektu kache ashar moto warm hug pete button-e tap koro.";
-      wishNote.textContent =
-        "Button-e tap kore dekho—tomar jonno choto ekta shantir asha lukiye ache.";
-
-      secretEnvelope.classList.remove("open");
-      envelopeHint.textContent = "Wax seal-e tap kore chithi-ta khulo";
+        breathNote.textContent = "Khub sundor. Ekhon ektu halka lagche nishchoy.";
+        breathing = false;
+      }, 8000);
     });
-    document.addEventListener("click", (e) => {
-      if (e.target.closest("button") || e.target.closest(".envelope-stage") || e.target.closest(".breath-circle") || e.target.closest(".letter-modal")) {
-        return;
-      }
-      const bloom = document.createElement("span");
-      bloom.className = "tap-bloom";
-      bloom.style.left = `${e.clientX}px`;
-      bloom.style.top = `${e.clientY}px`;
-      document.body.appendChild(bloom);
-      setTimeout(() => bloom.remove(), 1200);
-    });
-    const entranceGate = document.getElementById("entranceGate");
-    const enterSanctuaryBtn = document.getElementById("enterSanctuaryBtn");
 
-    enterSanctuaryBtn.addEventListener("click", () => {
-      entranceGate.classList.add("hidden");
-      const rect = enterSanctuaryBtn.getBoundingClientRect();
-      createSparkles(rect.left + rect.width / 2, rect.top + 10);
+    const hugNote = document.getElementById("hugNote");
+    document.getElementById("warmHugBtn").addEventListener("click", () => {
+      hugNote.textContent = "🤍 Ekta boro, warm hug sudhu tomar jonno—tumi eka noy.";
     });
-    const worryInput = document.getElementById("worryInput");
-    const releaseWorryBtn = document.getElementById("releaseWorryBtn");
-    const releaseStatus = document.getElementById("releaseStatus");
 
-    const releaseReplies = [
-      "Ei bhar-ta akashe miliye gelo... ekhon ektu halka kore shwash nao.",
-      "Sob kotha nijer bhetore rakhte hoy na—tumi khub valo acho, sob thik hoye jabe.",
-      "Mon kharap-ta ektu dure sore jak... ami sob somoy tomar pashe achi."
+    // 9. Step 4: Wish Jar
+    const wishes = [
+      "Ajker raat-ta tomar jonno khub shanto ar aramdayak hok.",
+      "Tomar sob mon kharap dhire dhire halka hoye jak.",
+      "Tumi jemon acho, temon-i khub special ar ador-er.",
+      "Kal shokal-ta notun hasi ar shanti niye asuk."
     ];
-    let releaseIdx = 0;
+    let wishIdx = 0;
+    const wishNote = document.getElementById("wishNote");
+    document.getElementById("wishBtn").addEventListener("click", () => {
+      wishNote.textContent = wishes[wishIdx % wishes.length];
+      wishIdx++;
+    });
 
-    releaseWorryBtn.addEventListener("click", () => {
-      const val = worryInput.value.trim();
+    // 10. Step 5: Reminders
+    const reminders = [
+      "Ektu jol kheye nio, ar chokh bondho kore 10 second rest nao.",
+      "Sob kichu ajke-i thik korte hobe na—nijer upor biswas rekho.",
+      "Tomar hasi-ta khub dami, tai nije-ke ektu somoy dao."
+    ];
+    let remIdx = 0;
+    const reminderNote = document.getElementById("reminderNote");
+    document.getElementById("reminderBtn").addEventListener("click", () => {
+      reminderNote.textContent = reminders[remIdx % reminders.length];
+      remIdx++;
+    });
+
+// 11. Step 6: Moner Kotha Akashe Miliye Jaoa
+    const skyInput = document.getElementById("skyInput");
+    const skyNote = document.getElementById("skyNote");
+    const releaseSkyBtn = document.getElementById("releaseSkyBtn");
+
+    function launchThoughtToSky(text) {
+      const rect = releaseSkyBtn.getBoundingClientRect();
+      const floater = document.createElement("div");
+      floater.className = "sky-upward-word";;
+      floater.textContent = `✦ ${text}`;
+      floater.style.top = (rect.top - 12) + "px";
+      document.body.appendChild(floater);
+
+      setTimeout(() => {
+        floater.remove();
+      }, 2150);
+    }
+
+    releaseSkyBtn.addEventListener("click", () => {
+      const val = skyInput.value.trim();
       if (!val) {
-        releaseStatus.textContent = "Age choto kore ekta kotha likho, tarpor akashe chere dao.";
+        skyNote.textContent = "Age choto kore moner kotha-ta likhe nao.";
         return;
       }
 
-      worryInput.classList.add("dissolving");
-      const rect = worryInput.getBoundingClientRect();
-      createSparkles(rect.left + rect.width / 2, rect.top + 10);
-
-      setTimeout(() => {
-        worryInput.value = "";
-        worryInput.classList.remove("dissolving");
-        releaseStatus.textContent = releaseReplies[releaseIdx % releaseReplies.length];
-        releaseIdx++;
-      }, 650);
+      launchThoughtToSky(val);
+      skyInput.value = "";
+      skyNote.textContent = "✦ Tomar likha kotha-ta dhire dhire akashe miliye gelo. Ekhon mon-ta ektu halka.";
     });
-    const reminderCard = document.getElementById("reminderCard");
-    const reminderBtn = document.getElementById("reminderBtn");
+    // 12. Step 7: Letter Modal & Promise Note
+    const modalBackdrop = document.getElementById("letterModalBackdrop");
+    const promiseNote = document.getElementById("promiseNote");
+    const envelopeHint = document.getElementById("envelopeHint");
 
-    const realReminders = [
-      "Ekhon kono boro kichu bhabar dorkar nei—ektu bosho, shwash nao, nijer jotno nao.",
-      "Mon bhari lagle nijer opor ar baroti chap dio na; ajker moton ektu halka thako.",
-      "Tumi ager onek din-o emon bhari somoy par kore esecho—ajker din-tao par hoye jabe.",
-      "Ektu jol khao, chokh-ta ektu rest dao—sob kichu ekshathe thik hobe na, kintu dhire dhire hobe."
-    ];
-    let reminderIdx = 1;
-
-    reminderBtn.addEventListener("click", () => {
-      reminderCard.style.opacity = "0.2";
-      setTimeout(() => {
-        reminderCard.textContent = realReminders[reminderIdx % realReminders.length];
-        reminderIdx++;
-        reminderCard.style.opacity = "1";
-      }, 220);
-    });
-    const waterBtn = document.getElementById("waterBtn");
-    const restBtn = document.getElementById("restBtn");
-    const careNote = document.getElementById("careNote");
-
-    waterBtn.addEventListener("click", () => {
-      waterBtn.classList.add("done");
-      careNote.textContent = "Khb bhalo—ektu jol khele matha ar mon du-to-i ektu halka hoy.";
+    document.getElementById("openLetterBtn").addEventListener("click", () => {
+      modalBackdrop.classList.add("open");
     });
 
-    restBtn.addEventListener("click", () => {
-      restBtn.classList.add("done");
-      careNote.textContent = "Ektu chup kore boshe shwash nao—tara kore kichu korte hobe na.";
+    document.getElementById("closeModalBtn").addEventListener("click", () => {
+      modalBackdrop.classList.remove("open");
+      promiseNote.classList.add("show");
+      envelopeHint.textContent = "Chithi pora hoye geche • Niche tomar jonno ekta promise ache";
+    });
+
+    // 13. Reset Sanctuary
+    document.getElementById("resetSanctuaryBtn").addEventListener("click", () => {
+      lanternBtn.classList.remove("released");
+      lanternNote.textContent = "Moner bhar-ta ektu halka korbe? Glowing lantern-ta tap kore akashe chere dao.";
+      moodNote.textContent = "Je kono ekta button-e tap koro—tomar jonno choto ekta shantir kotha opekkha korche.";
+      breathCircle.classList.remove("inhale");
+      breathCircle.textContent = "Tap Breath";
+      breathNote.textContent = "Circle-ta tap kore 4 second shwash nao, 4 second chere dao.";
+      hugNote.textContent = "Ektu kache ashar moto warm hug pete button-e tap koro.";
+      wishNote.textContent = "Button-e tap kore dekho—tomar jonno choto ekta shantir asha lukiye ache.";
+      reminderNote.textContent = "Ekhon kono boro kichu bhabar dorkar nei—ektu bosho, shwash nao, nijer jotno nao.";
+      skyInput.value = "";
+      skyNote.textContent = "Kono kotha bhetore jome thakle choto kore likhe chere dao—kothao save hobe na, sudhu miliye jabe.";
+      promiseNote.classList.remove("show");
+      envelopeHint.textContent = "Wax seal-e tap kore chithi-ta khulo";
+      modalBackdrop.classList.remove("open");
+      showStep(1);
+    });
+    // Touch / Click Ripple Effect
+    document.addEventListener("pointerdown", (e) => {
+      const ripple = document.createElement("span");
+      ripple.className = "touch-ripple";
+      ripple.style.left = e.clientX + "px";
+      ripple.style.top = e.clientY + "px";
+      document.body.appendChild(ripple);
+      setTimeout(() => ripple.remove(), 700);
+    });
+
+    // Wish & Reminder-e soft text animation trigger
+    function pulseTextElement(el) {
+      if (!el) return;
+      el.classList.remove("soft-text-pop");
+      void el.offsetWidth;
+      el.classList.add("soft-text-pop");
+    }
+
+    const origWishBtn = document.getElementById("wishBtn");
+    if (origWishBtn && wishNote) {
+      origWishBtn.addEventListener("click", () => pulseTextElement(wishNote));
+    }
+
+    const origReminderBtn = document.getElementById("reminderBtn");
+    if (origReminderBtn && reminderNote) {
+      origReminderBtn.addEventListener("click", () => pulseTextElement(reminderNote));
+    }
+    // Keyboard Arrow diye step bodlanor subidha (modal khola na thakle)
+    document.addEventListener("keydown", (e) => {
+      if (modalBackdrop && modalBackdrop.classList.contains("open")) return;
+      const activeSec = document.querySelector(".step-section.is-active");
+      const currentStep = activeSec ? Number(activeSec.dataset.step) : 1;
+
+      if (e.key === "ArrowRight" && currentStep < 7) {
+        showStep(currentStep + 1);
+      } else if (e.key === "ArrowLeft" && currentStep > 1) {
+        showStep(currentStep - 1);
+      }
     });
   </script>
 </body>
